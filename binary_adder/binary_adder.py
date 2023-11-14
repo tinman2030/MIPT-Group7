@@ -32,7 +32,7 @@ def add_binary_numbers(bit1, bit2):
         carry = sum_bits // 2  # Set the carry for the next iteration
 
     if carry:
-        result.insert(0, 1)  # If there's a carry after all iterations, add it to the front
+        result.insert(0, carry)  # If there's a carry after all iterations, add it to the front
 
     return result
 #Converting a list of decimal numbers to make a list of binarys numbers
