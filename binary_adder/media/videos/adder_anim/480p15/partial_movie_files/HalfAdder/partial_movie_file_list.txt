@@ -1,3 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:/Users/minhntran/Downloads/IPT/MIPT-Group7/binary_adder/media/videos/adder_anim/480p15/partial_movie_files/HalfAdder/1185818338_3040081331_223132457.mp4'
-file 'file:/Users/minhntran/Downloads/IPT/MIPT-Group7/binary_adder/media/videos/adder_anim/480p15/partial_movie_files/HalfAdder/624642324_2207051751_1091499788.mp4'
