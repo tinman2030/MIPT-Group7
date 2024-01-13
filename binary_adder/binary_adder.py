@@ -64,6 +64,16 @@ def add_decimal_numbers_in_binary(numbers):
         result_binary = add_binary_numbers(result_binary, binary)
 
     return result_binary
+def make_sublists(list,n):
+    i = 0
+    big_list = []
+    while i*n < len(list):
+        big_list.append(list[i*n:(i+1)*n])
+        i += 1
+    big_list.append(list[i*n:])
+
+    return big_list
+
 
 def main():
     user_input = input("Enter a list of numbers separated by spaces: ")
@@ -77,9 +87,19 @@ def main():
     #making the combos
     combinations = make_combos(numbers)
     
-    binary_combos_list = []
-    #converting the combos into binary
-    for combo in combinations:
-        print(add_decimal_numbers_in_binary(combo))
+    print(make_sublists(combinations,8))
+
+    
 if __name__ == "__main__":
     main()
+
+"""
+i = 0
+        n = 4
+        while i*n < len(combo_list):
+            text = Text(f"{combo_list[i*n:(i+1)*n]}").next_to(shit,DOWN * (i+1))
+            self.play(Write(text))
+            i += 1
+        text = combo_list[i*n:]
+        self.play(Write(text))
+"""
