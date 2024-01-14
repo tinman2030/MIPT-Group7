@@ -44,6 +44,35 @@ class BinaryConversion(Scene):
             sublist_text = Text(f"{combo[i]}", font_size=18).next_to(shit, DOWN*(i+1))
             self.play(Write(sublist_text), run_time=1)
             self.wait(0.5)
+        self.wait(5)
+
+    def decimal_to_binary_list(self, decimal_list):
+        return [bin(x)[2:] for x in decimal_list]
+    #getting the different combinations of a list
+    def make_combos(self, my_set):
+
+        my_set = [x for x in my_set if x != 0]
+
+        if len(my_set) < 1:
+            raise ValueError("Size of the set must be greater than 1")
+
+        combos = []
+        for i in range(1, len(my_set) +1):
+            combos.extend(combinations(my_set,i))
+        combos_list = [list(comb) for comb in combos]
+        unique_combo_list = []
+
+        [unique_combo_list.append(x) for x in combos_list if x not in unique_combo_list]
+
+        return unique_combo_list
+    def make_sublists(self,list,n):
+        i = 0
+        big_list = []
+        while i*n < len(list):
+            big_list.append(list[i*n:(i+1)*n])
+            i += 1
+
+        return big_list
 class AdderUnit(VGroup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -78,32 +107,3 @@ class AdderUnit(VGroup):
 
 
         self.add(box, input_A, input_B, sum, c, line_A, line_B, line_sum, line_carry)
-
-    def decimal_to_binary_list(self, decimal_list):
-        return [bin(x)[2:] for x in decimal_list]
-    #getting the different combinations of a list
-    def make_combos(self, my_set):
-
-        my_set = [x for x in my_set if x != 0]
-
-        if len(my_set) < 2:
-            raise ValueError("Size of the set must be greater than 2")
-
-        combos = []
-        for i in range(2, len(my_set) +1):
-            combos.extend(combinations(my_set,i))
-        combos_list = [list(comb) for comb in combos]
-        unique_combo_list = []
-
-        [unique_combo_list.append(x) for x in combos_list if x not in unique_combo_list]
-
-        return unique_combo_list
-    def make_sublists(self,list,n):
-        i = 0
-        big_list = []
-        while i*n < len(list):
-            big_list.append(list[i*n:(i+1)*n])
-            i += 1
-        big_list.append(list[i*n:])
-
-        return big_list
