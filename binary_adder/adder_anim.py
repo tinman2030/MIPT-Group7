@@ -1,35 +1,6 @@
 from manim import *
 import os
 
-class BinaryConversion(Scene):
-    def construct(self):
-        # Input numbers
-        num1 = 42
-        num2 = 17
-
-        # Display the original numbers
-        decimal1 = Text(f"Number 1: {num1}", font_size=24)
-        decimal2 = Text(f"Number 2: {num2}", font_size=24).next_to(decimal1, DOWN)
-
-        self.play(Write(decimal1), Write(decimal2))
-        self.wait(1)
-
-        # Convert numbers to binary
-        binary_num1 = bin(num1)[2:].zfill(max(len(bin(num1)), len(bin(num2))))
-        binary_num2 = bin(num2)[2:].zfill(max(len(bin(num1)), len(bin(num2))))
-
-        # Display the binary representations
-        binary_text1 = Text(f"Binary 1: {binary_num1}", font_size=24)
-        binary_text2 = Text(f"Binary 2: {binary_num2}", font_size=24).next_to(binary_text1, DOWN)
-
-        self.play(
-            Transform(decimal1, binary_text1),
-            Transform(decimal2, binary_text2),
-            run_time=2
-        )
-
-        self.wait(1)
-
 class HalfAdder(Scene):
     def construct(self):
         Title = Text("Half Adder", font_size = 36).shift(3*UP + .2 * RIGHT)
@@ -81,7 +52,7 @@ class HalfAdder(Scene):
             GrowArrow(Arrow(input_B.get_bottom() + [2.5,-0.55,0], and_gate.get_top() + [0.2,0,0], color=WHITE,stroke_width = 1,tip_length = 0.1)),
             GrowArrow(Arrow(and_gate.get_bottom(), carry_label.get_top(), color=WHITE,stroke_width = 1,tip_length = 0.1)),
 
-            GrowFromPoint(Line(Title.get_left() + [-0.5,-0.3,0], Title.get_right() + [0.5,-0.3,0], stroke_width = 3,color = YELLOW),Title.get_left() + [-0.5,-0.3,0],run_time = 10),
+            GrowFromPoint(Line(Title.get_left() + [-0.5,-0.3,0], Title.get_right() + [0.5,-0.3,0], stroke_width = 3,color = ORANGE),Title.get_left() + [-0.5,-0.3,0],run_time = 8),
         )
 
         # transform the whole scene into a box
@@ -127,7 +98,7 @@ class HalfAdder(Scene):
             GrowFromPoint(Line(box2.get_right() + [0.3,-0.2,0], box2.get_right() + [0.3,-1.8,0], stroke_width = 1),box.get_right() + [0.3,-0.2,0],run_time = 2),
             GrowFromPoint(Line(box2.get_right() + [0.3,-1.8,0], box2.get_right() + [0.75,-1.8,0], stroke_width = 1),box.get_right() + [0.75,-1.8,0],run_time = 2),
 
-            GrowFromPoint(Line(Title.get_left() + [-0.5,-0.3,0], Title.get_right() + [0.5,-0.3,0], stroke_width = 3,color = YELLOW),Title.get_left() + [-0.5,-0.3,0],run_time = 10),
+            GrowFromPoint(Line(Title.get_left() + [-0.5,-0.3,0], Title.get_right() + [0.5,-0.3,0], stroke_width = 3,color = ORANGE),Title.get_left() + [-0.5,-0.3,0],run_time = 8),
 
         )
         title = Text("3-Bit Ripple Adder", font_size = 30).shift(3*UP)
@@ -194,5 +165,6 @@ class HalfAdder(Scene):
             GrowFromPoint(Line(box2.get_left() + [0,-0.1,0], carry_out.get_top() + [0,0.9,0], color=WHITE, stroke_width=1),box1.get_left() + [0,-0.1,0],run_time = 2),
             GrowFromPoint(Line(carry_out.get_top(), carry_out.get_top() + [0,0.9,0], color=WHITE, stroke_width=1),carry_out.get_top(),run_time = 2),
 
-            GrowFromPoint(Line(title.get_left() + [-0.5,-0.3,0], title.get_right() + [0.5,-0.3,0], stroke_width = 3,color = YELLOW),title.get_left() + [-0.5,-0.3,0],run_time = 10),
+            GrowFromPoint(Line(title.get_left() + [-0.5,-0.3,0], title.get_right() + [0.5,-0.3,0], stroke_width = 3,color = ORANGE),title.get_left() + [-0.5,-0.3,0],run_time = 8),
         )
+        self.wait(3)
