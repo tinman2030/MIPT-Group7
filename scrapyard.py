@@ -4,8 +4,26 @@ from itertools import combinations
 class MakeAdder(MovingCameraScene):
     def construct(self):
 
+        """
+        Loop to sequentially add sum up a list. Put it in there
+        list = [1,2,3,4,5]
+        sum = list[0]
+        for i in range(len(list)-1):
+            sum = sum + list[i+1]
+            print(sum)
+        """
+        #self.play(BinaryConversion(original_list = [1,2,3,4,5]))
+
         bit1 = '100011'
         bit2 = '1100111'
+
+        b1 = Text(f"num1:{bit1}",font_size = 18).to_edge(UP)
+        b2 = Text(f"num2{bit2}",font_size = 18).next_to(b1,DOWN)
+
+        self.play(
+            Write(b1),
+            Write(b2)
+        )
 
         result = []
 
@@ -42,14 +60,18 @@ class MakeAdder(MovingCameraScene):
         self.wait(2) 
 
 class BinaryConversion(Scene):
-    def construct(self, original_list = [1,2,3,4,5]):
+    def __init__(self, original_list, **kwargs):
+        self.original_list = original_list or [1, 2, 3, 4, 5]
+        super().__init__()
+
+    def construct(self):
         # Display the original list
-        original_text = Text("Original List: " + str(original_list), font_size=24).to_edge(UP)
+        original_text = Text("Original List: " + str(self.original_list), font_size=24).to_edge(UP)
         self.play(Write(original_text), run_time = 2)
         self.wait(2)
 
         # Convert the list to binary
-        binary_list = self.decimal_to_binary_list(original_list)
+        binary_list = self.decimal_to_binary_list(self.original_list)
         binary_text = Text("Binary List: " + str(binary_list), font_size=24).next_to(original_text, DOWN)
 
         combo_list = self.make_combos(binary_list)

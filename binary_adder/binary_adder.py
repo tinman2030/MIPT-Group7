@@ -103,27 +103,3 @@ i = 0
         text = combo_list[i*n:]
         self.play(Write(text))
 """
-
-#given two strings that represent binary numbers, add them and keep track of the result
-bit1 = '101'
-bit2 = '111'
-
-result = []
-
-max_len = max(len(bit1), len(bit2))
-bit1 = [0] * (max_len - len(bit1)) + bit1
-bit2 = [0] * (max_len - len(bit2)) + bit2
-
-input_list = []
-
-for i in range(max_len - 1, -1, -1):
-    for_adder = (bit1[i],bit2[i],carry)
-    sum_bits = bit1[i] + bit2[i] + carry
-    result.insert(0, sum_bits % 2)  # Insert the least significant bit to the front
-    carry = sum_bits // 2  # Set the carry for the next iteration
-    input_list.append(for_adder)
-
-    
-
-if carry:
-    result.insert(0, carry)  # If there's a carry after all iterations, add it to the front
