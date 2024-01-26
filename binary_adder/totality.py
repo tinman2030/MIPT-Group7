@@ -2,7 +2,7 @@ from manim import *
 from itertools import combinations
 
 class AllTogether(MovingCameraScene):
-    def construct(self,original_list = [1,2,3]):
+    def construct(self,original_list = [62,24,37]):
          # Display the original list
         original_text = Text("Original List: " + str(original_list), font_size=24).to_edge(UP)
         self.play(Write(original_text), run_time = 2)
@@ -41,11 +41,10 @@ class AllTogether(MovingCameraScene):
 
             combo_text = Text(f"Current Combo: {largest_combo}" , font_size = 18).to_edge(UP)
             self.play(Write(combo_text))
-            if combo_list != []:
-                sum = combo_list[0]
-                for i in range(len(combo_list)-1):
-                    sum = self.makeAdders(sum,combo_list[i+1])
-                    self.clear()
+            sum = largest_combo[0]
+            for i in range(len(largest_combo)-1):
+                sum = self.makeAdders(sum,largest_combo[i+1])
+                self.clear()
 
 
     def decimal_to_binary_list(self, decimal_list):
