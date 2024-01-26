@@ -2,8 +2,9 @@ from manim import *
 from itertools import combinations
 
 class AllTogether(MovingCameraScene):
-    def construct(self,original_list = [62,24,37]):
+    def construct(self,original_list = [62,24,37],target = 61):
          # Display the original list
+        binary_target = bin(target)[2:]
         original_text = Text("Original List: " + str(original_list), font_size=24).to_edge(UP)
         self.play(Write(original_text), run_time = 2)
         self.wait(2)
@@ -34,22 +35,78 @@ class AllTogether(MovingCameraScene):
 
         self.clear()
 
+        target_text = Text(f"Target = {str(binary_target)}", font_size = 20).to_edge(DOWN)
         for i in range((original_length)):
 
             largest_combo = max(combo_list, key=len)
             combo_list.remove(largest_combo)
 
-            combo_text = Text(f"Current Combo: {largest_combo}" , font_size = 18).to_edge(UP)
+            num_units = len(max(largest_combo, key=len))
+
+            combo_text = Text(f"Current Combo: {largest_combo}" , font_size = 24)
+
+            centre = combo_text.get_center()
+            self.camera.frame.set_width(2.5 * float(num_units) * 1.4)
+            self.camera.frame.move_to(centre)
+
+            combo_text.to_edge(UP)
+
+            self.play(Write(target_text))
             self.play(Write(combo_text))
-            sum = largest_combo[0]
-            for i in range(len(largest_combo)-1):
-                sum = self.makeAdders(sum,largest_combo[i+1])
-                self.clear()
+            sum_guy = largest_combo[0]
 
+            for j in range(len(largest_combo)-1):
 
+                center_of_screen = ORIGIN
+                
+                fucker = self.makeAdders(sum_guy,largest_combo[j+1])
+                adder_units = fucker[0]
+                sum_guy = self.add_binary_strings(sum_guy, largest_combo[j+1])
+
+                sum_text = Text(f"Sum = {str(sum_guy)}", font_size = 20).next_to(target_text, UP)
+
+                center_of_adder_units = adder_units.get_center()
+                displacement_vector = center_of_screen - center_of_adder_units
+                adder_units.shift(displacement_vector)
+
+                self.play(Create(adder_units, run_time=(num_units)*1.5))
+
+                self.wait(2)
+
+                self.play(Write(sum_text), run_time = 2)
+    
+                self.wait(3)
+
+                if (sum_guy == binary_target):
+                    true_target = Text(f"Target = {str(binary_target)}", font_size = 20, color = ORANGE).to_edge(DOWN)
+                    true_sum =  Text(f"Sum = {str(sum_guy)}", font_size = 20, color = ORANGE).next_to(true_target, UP)
+
+                    self.play(Transform(sum_text,true_sum),
+                              Transform(target_text,true_target))
+                    self.wait(3)
+                    self.play(Transform(true_target,target_text))
+                
+                self.remove(*self.mobjects)
+                self.add(combo_text)
+                self.add(target_text)
+            self.clear()
     def decimal_to_binary_list(self, decimal_list):
         return [bin(x)[2:] for x in decimal_list]
     #getting the different combinations of a list
+    def add_binary_strings(self,binary_str1, binary_str2):
+        # Convert binary strings to integers
+        num1 = int(binary_str1, 2)
+        num2 = int(binary_str2, 2)
+
+        # Add the numbers
+        sum_result = num1 + num2
+
+        # Convert the sum back to binary and remove the '0b' prefix
+        sum_binary = bin(sum_result)[2:]
+
+        return sum_binary
+
+#
     def make_combos(self, my_set):
 
         my_set = [x for x in my_set if x != 0]
@@ -97,22 +154,10 @@ class AllTogether(MovingCameraScene):
         if carry:
             result.insert(0, carry)  # If there's a carry after all iterations, add it to the front
 
-        num_units = max_len
-
         # Create AdderUnits with specified inputs
         adder_units = VGroup(*[AdderUnit(*inputs).shift((LEFT * 2.2) * i) for i, inputs in enumerate(input_list)])
 
-        center_of_units = adder_units.get_center()
-
-        # Set the camera to focus on the center of the units
-        self.camera.frame.set_width(adder_units.width * 1.4)
-        self.camera.frame.move_to(center_of_units)
-
-        # Display the adder units
-        self.play(Create(adder_units, run_time=num_units))
-        self.wait(2) 
-
-        return(result)
+        return(adder_units,result)
 
 
 class AdderUnit(VGroup):
@@ -121,6 +166,8 @@ class AdderUnit(VGroup):
         self.createUnit(A, B, C_in)
     def construct(self):
         # Create an instance of AdderUnit
+        AdderUnit.width = self[0][0].get_width()
+
         adder_unit = AdderUnit()
 
         # Add it to the scene
@@ -128,8 +175,7 @@ class AdderUnit(VGroup):
 
         # Play animations
         self.play(
-            Create(adder_unit,run_time = 2),  # You can use your own animations here
-            run_time=2
+            Create(adder_unit,run_time = 5)
         )
 
         # Wait for a moment
