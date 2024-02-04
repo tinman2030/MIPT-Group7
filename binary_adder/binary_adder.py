@@ -92,14 +92,3 @@ def main():
     
 if __name__ == "__main__":
     main()
-
-"""
-i = 0
-        n = 4
-        while i*n < len(combo_list):
-            text = Text(f"{combo_list[i*n:(i+1)*n]}").next_to(shit,DOWN * (i+1))
-            self.play(Write(text))
-            i += 1
-        text = combo_list[i*n:]
-        self.play(Write(text))
-"""

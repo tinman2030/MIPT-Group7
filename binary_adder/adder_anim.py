@@ -28,7 +28,7 @@ class HalfAdder(Scene):
         sum_label = Text("Sum", font_size= 24).shift(LEFT + 2 * DOWN)
         carry_label = Text("Carry", font_size= 24).shift(1.5 * RIGHT + 2 * DOWN)
 
-        line1 = Line(input_A.get_bottom() + [0,-0.4,0], input_A.get_bottom() + [2.5,-0.4,0], color = WHITE, stroke_width = 1)
+        line1 = Line(input_A.get_bottom() + [0,-0.38,0], input_A.get_bottom() + [2.5,-0.38,0], color = WHITE, stroke_width = 1)
         line2 = Line(input_B.get_bottom() + [0,-0.8,0], input_B.get_bottom() + [2.5,-0.8,0], color = WHITE, stroke_width = 1)
         
         # Connections
@@ -81,22 +81,22 @@ class HalfAdder(Scene):
             Create(sum_label,run_time = 2),
             Create(carry_label,run_time = 2),
             
-            GrowFromPoint(Line(input_A.get_right(), box.get_left() + [0,0.2,0], color=WHITE, stroke_width=1),input_A.get_right(),run_time = 2),
-            GrowFromPoint(Line(input_B.get_right(), box.get_left() + [0,-0.2,0], color=WHITE, stroke_width=1),input_B.get_right(),run_time = 2),
-            GrowFromPoint(Line(box.get_right() + [0,0.2,0], box2.get_left() + [0,0.2,0], color=WHITE, stroke_width=1),box.get_right() + [0,0.2,0],run_time = 2),
-            GrowFromPoint(Line(box2.get_right() + [0,0.2,0], sum_label.get_left(), color=WHITE, stroke_width=1),box2.get_right() + [0,0.2,0],run_time = 2),
-            GrowFromPoint(Line(carry_in.get_right(), carry_in.get_right() + [2.2,0,0], stroke_width = 1),carry_in.get_right(),run_time = 2),
-            GrowFromPoint(Line(carry_in.get_right() + [2.2,0,0], carry_in.get_right() + [2.2,1.5,0], stroke_width = 1),carry_in.get_right(),run_time = 2),
-            GrowFromPoint(Line(carry_in.get_right() + [2.2,1.5,0], box2.get_left() + [0,-0.25,0], stroke_width = 1),carry_in.get_right() + [2.2,1.5,0],run_time = 2),
-            GrowFromPoint(Line(or_gate.get_right(), carry_label.get_left() + [0,-0,0], stroke_width = 1),or_gate.get_right(),run_time = 2),
+            GrowFromPoint(Arrow(input_A.get_right() + [-0.2,0,0], box.get_left() + [0,0.2,0] + [0.2,0,0], color=WHITE, stroke_width=1,tip_length = 0.1),input_A.get_right(),run_time = 2),
+            GrowFromPoint(Arrow(input_B.get_right() + [-0.2,0,0], box.get_left() + [0,-0.2,0]+ [0.2,0,0], color=WHITE, stroke_width=1,tip_length = 0.1),input_B.get_right(),run_time = 2),
+            GrowFromPoint(Arrow(box.get_right() + [0,0.2,0] + [-0.2,0,0], box2.get_left() + [0,0.2,0]+ [0.2,0,0], color=WHITE, stroke_width=1,tip_length = 0.1),box.get_right() + [0,0.2,0],run_time = 2),
+            GrowFromPoint(Arrow(box2.get_right() + [0,0.2,0] + [-0.2,0,0], sum_label.get_left()+ [0.2,0,0], color=WHITE, stroke_width=1, tip_length = 0.1),box2.get_right() + [0,0.2,0],run_time = 2),
+            GrowFromPoint(Line(carry_in.get_right(), carry_in.get_right() + [2,0,0], stroke_width = 1),carry_in.get_right(),run_time = 2),
+            GrowFromPoint(Line(carry_in.get_right() + [2,0,0], carry_in.get_right() + [2,1.5,0], stroke_width = 1),carry_in.get_right(),run_time = 2),
+            GrowFromPoint(Arrow(carry_in.get_right() + [2,1.5,0], box2.get_left() + [0,-0.25,0], stroke_width = 1,tip_length = 0.1),carry_in.get_right() + [2.2,1.5,0],run_time = 2),
+            GrowFromPoint(Arrow(or_gate.get_right()+ [-0.2,0,0], carry_label.get_left() + [0.2,0,0], stroke_width = 1,tip_length = 0.1),or_gate.get_right(),run_time = 2),
 
             GrowFromPoint(Line(box.get_right() + [0,-0.2,0], box.get_right() + [0.3,-0.2,0], stroke_width = 1),box.get_right() + [0,-0.2,0],run_time = 2),
             GrowFromPoint(Line(box.get_right() + [0.3,-0.2,0], or_gate.get_left() + [-2.46,-0.2,0], stroke_width = 1),box.get_right() + [0,-0.2,0],run_time = 2),
-            GrowFromPoint(Line(or_gate.get_left() + [-2.46,-0.2,0], or_gate.get_left() + [0,-0.2,0], stroke_width = 1),box.get_right() + [-2.46,-0.2,0],run_time = 2),
+            GrowFromPoint(Arrow(or_gate.get_left() + [-2.36,-0.2,0]+ [-0.35,0,0], or_gate.get_left() + [0,-0.2,0] + [0.2,0,0], stroke_width = 1,tip_length = 0.1),box.get_right() + [-2.46,-0.2,0],run_time = 2),
 
             GrowFromPoint(Line(box2.get_right() + [0,-0.2,0], box2.get_right() + [0.3,-0.2,0], stroke_width = 1),box.get_right() + [0,-0.2,0],run_time = 2),
             GrowFromPoint(Line(box2.get_right() + [0.3,-0.2,0], box2.get_right() + [0.3,-1.8,0], stroke_width = 1),box.get_right() + [0.3,-0.2,0],run_time = 2),
-            GrowFromPoint(Line(box2.get_right() + [0.3,-1.8,0], box2.get_right() + [0.75,-1.8,0], stroke_width = 1),box.get_right() + [0.75,-1.8,0],run_time = 2),
+            GrowFromPoint(Arrow(box2.get_right() + [0.3,-1.8,0], box2.get_right() + [0.75,-1.8,0], stroke_width = 1,tip_length = 0.1),box.get_right() + [0.75,-1.8,0],run_time = 2),
 
             GrowFromPoint(Line(Title.get_left() + [-0.5,-0.3,0], Title.get_right() + [0.5,-0.3,0], stroke_width = 3,color = ORANGE),Title.get_left() + [-0.5,-0.3,0],run_time = 8),
 
@@ -124,6 +124,15 @@ class HalfAdder(Scene):
 
         carry_out = Text("Carry\nOut", font_size = 18).next_to(sum2,3 * LEFT)
 
+        dot_A0 = Dot(color=WHITE,radius = 0.03).move_to(input_A0.get_bottom()+ [0,-0.1,0])
+        dot_A1 = Dot(color=WHITE,radius = 0.03).move_to(input_A1.get_bottom()+ [0,-0.1,0])
+        dot_A2 = Dot(color=WHITE,radius = 0.03).move_to(input_A2.get_bottom()+ [0,-0.1,0])
+
+
+        dot_B0 = Dot(color=WHITE,radius = 0.03).move_to(input_B0.get_bottom()+ [0,-0.1,0])
+        dot_B1 = Dot(color=WHITE,radius = 0.03).move_to(input_B1.get_bottom()+ [0,-0.1,0])
+        dot_B2 = Dot(color=WHITE,radius = 0.03).move_to(input_B2.get_bottom()+ [0,-0.1,0])
+
         self.play(
             Create(title, run_time = 2),
 
@@ -148,12 +157,20 @@ class HalfAdder(Scene):
             Create(c1),
             Create(carry_out),
 
-            GrowFromPoint(Line(input_A0.get_bottom(), box0.get_top(), color=WHITE, stroke_width=1),input_A0.get_bottom(),run_time = 2),
-            GrowFromPoint(Line(input_B0.get_bottom(), box0.get_top() + [0.37,0,0], color=WHITE, stroke_width=1),input_B0.get_bottom(),run_time = 2),
-            GrowFromPoint(Line(input_A1.get_bottom(), box1.get_top(), color=WHITE, stroke_width=1),input_A1.get_bottom(),run_time = 2),
-            GrowFromPoint(Line(input_B1.get_bottom(), box1.get_top() + [0.37,0,0], color=WHITE, stroke_width=1),input_B1.get_bottom(),run_time = 2),
-            GrowFromPoint(Line(input_A2.get_bottom(), box2.get_top(), color=WHITE, stroke_width=1),input_A2.get_bottom(),run_time = 2),
-            GrowFromPoint(Line(input_B2.get_bottom(), box2.get_top() + [0.37,0,0], color=WHITE, stroke_width=1),input_B2.get_bottom(),run_time = 2),
+            Create(dot_A0),
+            Create(dot_A1),
+            Create(dot_A2),
+
+            Create(dot_B0),
+            Create(dot_B1),
+            Create(dot_B2),
+
+            GrowFromPoint(Line(input_A0.get_bottom() + [0,-0.1,0], box0.get_top(), color=WHITE, stroke_width=1),input_A0.get_bottom(),run_time = 2),
+            GrowFromPoint(Line(input_B0.get_bottom()+ [0,-0.1,0], box0.get_top() + [0.37,0,0], color=WHITE, stroke_width=1),input_B0.get_bottom(),run_time = 2),
+            GrowFromPoint(Line(input_A1.get_bottom()+ [0,-0.1,0], box1.get_top(), color=WHITE, stroke_width=1),input_A1.get_bottom(),run_time = 2),
+            GrowFromPoint(Line(input_B1.get_bottom()+ [0,-0.1,0], box1.get_top() + [0.36,0,0], color=WHITE, stroke_width=1),input_B1.get_bottom(),run_time = 2),
+            GrowFromPoint(Line(input_A2.get_bottom()+ [0,-0.1,0], box2.get_top(), color=WHITE, stroke_width=1),input_A2.get_bottom(),run_time = 2),
+            GrowFromPoint(Line(input_B2.get_bottom()+ [0,-0.1,0], box2.get_top() + [0.37,0,0], color=WHITE, stroke_width=1),input_B2.get_bottom(),run_time = 2),
 
             GrowFromPoint(Line(box0.get_bottom(), sum0.get_top(), color=WHITE, stroke_width=1),box0.get_bottom(),run_time = 2),
             GrowFromPoint(Line(box1.get_bottom(), sum1.get_top(), color=WHITE, stroke_width=1),box1.get_bottom(),run_time = 2),

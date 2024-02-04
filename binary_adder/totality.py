@@ -2,7 +2,7 @@ from manim import *
 from itertools import combinations
 
 class AllTogether(MovingCameraScene):
-    def construct(self,original_list = [62,24,37],target = 61):
+    def construct(self,original_list = [24,37],target = 61):
          # Display the original list
         binary_target = bin(target)[2:]
         original_text = Text("Original List: " + str(original_list), font_size=24).to_edge(UP)
@@ -84,8 +84,9 @@ class AllTogether(MovingCameraScene):
                     self.play(Transform(sum_text,true_sum),
                               Transform(target_text,true_target))
                     self.wait(3)
-                    self.play(Transform(true_target,target_text))
-                
+                    self.play(Transform(true_target,target_text),
+                              Transform(true_sum, sum_text))
+
                 self.remove(*self.mobjects)
                 self.add(combo_text)
                 self.add(target_text)
@@ -145,7 +146,7 @@ class AllTogether(MovingCameraScene):
         input_list = []
 
         for i in range(max_len - 1, -1, -1):
-            for_adder = (bit1[i], bit2[i], carry)
+            for_adder = (bit1[i], bit2[i], carry,i)
             sum_bits = bit1[i] + bit2[i] + carry
             result.insert(0, sum_bits % 2)  # Insert the least significant bit to the front
             carry = sum_bits // 2  # Set the carry for the next iteration
@@ -161,9 +162,9 @@ class AllTogether(MovingCameraScene):
 
 
 class AdderUnit(VGroup):
-    def __init__(self, A, B, C_in, **kwargs):
+    def __init__(self, A, B, C_in,position, **kwargs):
         super().__init__(**kwargs)
-        self.createUnit(A, B, C_in)
+        self.createUnit(A, B, C_in,position)
     def construct(self):
         # Create an instance of AdderUnit
         AdderUnit.width = self[0][0].get_width()
@@ -181,7 +182,7 @@ class AdderUnit(VGroup):
         # Wait for a moment
         self.wait(1)
 
-    def createUnit(self,A,B,C_in):
+    def createUnit(self,A,B,C_in,position):
 
         total = A + B + C_in
         S = total % 2
@@ -191,14 +192,65 @@ class AdderUnit(VGroup):
         box = VGroup(Square(side_length=1, color = BLUE),Text("Full\nAdder", font_size = 20).move_to(Square())).shift(2*RIGHT)
         input_A = Text(f"{A}", font_size = 24).next_to(box,UP * 3)
         input_B = Text(f"{B}", font_size = 24).next_to(box,UP * 3).shift(RIGHT * 0.37)
-        sum = Text(f"{S}", font_size = 24).next_to(box,2.5*DOWN)
-        c = Text(f"C = {C_out}", font_size = 18).next_to(box,LEFT).shift(UP * .2)
+        sum = Text(f"{S}", font_size = 24).next_to(box,3*DOWN)
 
-        line_A = Line(input_A.get_bottom(), box.get_top(), color=WHITE, stroke_width=1)
-        line_B = Line(input_B.get_bottom(), box.get_top() + [0.37, 0, 0], color=WHITE, stroke_width=1)
-        line_sum = Line(box.get_bottom(), sum.get_top(), color=WHITE, stroke_width=1)
-        line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-1.2, -0.1, 0], color=WHITE, stroke_width=1)
+        A_dot = Dot(color=WHITE,radius = 0.03).move_to(input_A.get_bottom()+ [0,-0.1,0])
+        B_dot = Dot(color=WHITE,radius = 0.03).move_to(input_B.get_bottom()+ [0,-0.1,0])
+        S_dot = Dot(color=WHITE,radius = 0.03).move_to(sum.get_top()+ [0,0.1,0])
 
-        self.add(box, input_A, input_B, sum, c, line_A, line_B, line_sum, line_carry)
-        
-        return C_out
+        if (S == 1):
+            line_sum = Line(box.get_bottom() , sum.get_top() + [0,0.1,0], color=BLUE_C, stroke_width=3)
+            S_dot = Dot(color=BLUE_C,radius = 0.04).move_to(sum.get_top()+ [0,0.1,0])
+        else:
+            line_sum = Line(box.get_bottom() , sum.get_top() + [0,0.1,0], color=WHITE, stroke_width=1)
+            S_dot = Dot(color=WHITE,radius = 0.03).move_to(sum.get_top()+ [0,0.1,0])
+
+
+        if(A == 1):
+            line_A = Line(input_A.get_bottom() + [0,-0.1,0], box.get_top(), color=BLUE_C, stroke_width=3)
+            A_dot = Dot(color=BLUE_C,radius = 0.04).move_to(input_A.get_bottom()+ [0,-0.1,0])
+        else:
+            line_A = Line(input_A.get_bottom() + [0,-0.1,0], box.get_top(), color=WHITE, stroke_width=1)
+            A_dot = Dot(color=WHITE,radius = 0.03).move_to(input_A.get_bottom()+ [0,-0.1,0])
+
+        if(B == 1):
+            line_B= Line(input_B.get_bottom() + [0,-0.1,0], box.get_top() + [0.37, 0, 0], color=BLUE_C, stroke_width=3)
+            B_dot = Dot(color=BLUE_C,radius = 0.04).move_to(input_B.get_bottom()+ [0,-0.1,0])
+        else:
+            line_B = Line(input_B.get_bottom() + [0,-0.1,0], box.get_top() + [0.37, 0, 0], color=WHITE, stroke_width=1)
+            B_dot = Dot(color=WHITE,radius = 0.03).move_to(input_B.get_bottom()+ [0,-0.1,0])
+
+        if(C_in == 1):
+
+            if(position == 0):
+                 #if it is the last one
+                c = Text(f"{C_out}", font_size = 18).next_to(sum, LEFT * 3)
+                line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-0.486, -0.1, 0], color=BLUE_C, stroke_width=3)
+                line_carry2 = Line(box.get_left() + [-0.486, -0.1, 0], c.get_top() + [0,0.1,0], color = BLUE_C, stroke_width = 3)
+
+                C_dot = Dot(color=BLUE_C,radius = 0.04).move_to(c.get_top() + [0,0.1,0])
+            
+                self.add(box,A_dot,B_dot,S_dot,input_A, input_B, sum, c, line_A, line_B, line_sum, line_carry,line_carry2, C_dot)
+            else:
+                #if it's not the last one
+                line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-1.2, -0.1, 0], color=BLUE_C, stroke_width=3)
+                c = Text(f"C = {C_out}", font_size = 18).next_to(box,LEFT).shift(UP * .2)
+
+                self.add(box,A_dot,B_dot,S_dot, input_A, input_B, sum, c, line_A, line_B, line_sum, line_carry)
+        else:
+            if(position == 0):
+                 #if it is the last one
+                c = Text(f"{C_out}", font_size = 18).next_to(sum, LEFT * 3.5)
+                line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-0.486, -0.1, 0], color=WHITE, stroke_width=1)
+                line_carry2 = Line(box.get_left() + [-0.486, -0.1, 0], c.get_top() + [0,0.1,0], color = WHITE, stroke_width = 1)
+
+                C_dot = Dot(color=WHITE,radius = 0.03).move_to(c.get_top() + [0,0.1,0])
+            
+                self.add(box,A_dot,B_dot,S_dot, input_A, input_B, sum, c, line_A, line_B, line_sum, line_carry,line_carry2,C_dot)
+            else:
+                #if it's not the last one
+                line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-1.2, -0.1, 0], color=WHITE, stroke_width=1)
+                c = Text(f"{C_out}", font_size = 18).next_to(box,LEFT).shift(UP * .2)
+
+                self.add(box,A_dot,B_dot,S_dot, input_A, input_B, sum, c, line_A, line_B, line_sum, line_carry)
+
