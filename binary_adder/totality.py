@@ -2,7 +2,7 @@ from manim import *
 from itertools import combinations
 
 class AllTogether(MovingCameraScene):
-    def construct(self,original_list = [31,36,24,3,43],target = 67):
+    def construct(self,original_list = [31,36,24,24,3,43,0],target = 67):
 
         Title = Text("Half Adder", font_size = 36).shift(3*UP + .2 * RIGHT)
         # make the inputs
@@ -236,7 +236,7 @@ class AllTogether(MovingCameraScene):
 
         #write each combo
         for i in range(len(combo)):
-            sublist_text = Text(f"{combo[i]}", font_size=18).next_to(shit, DOWN*(i+1))
+            sublist_text = Text(f"{combo[i]}", font_size=18).next_to(shit, DOWN*(i+1.5))
             self.play(Write(sublist_text), run_time=1)
             self.wait(0.5)
         self.wait(3)
@@ -246,13 +246,21 @@ class AllTogether(MovingCameraScene):
         vmobjects = [obj for obj in self.mobjects if isinstance(obj, VMobject)]
         self.play(FadeOut(VGroup(*vmobjects), run_time=2))
         #write the target
-        target_text = Text(f"Target = {str(binary_target)}", font_size = 20).to_edge(DOWN)
+        target_text = Text(f"Target = {str(binary_target)}", font_size = 20)
+
         for i in range((original_length)):
             #finding the largest combination and add from largest to smallest
             largest_combo = max(combo_list, key=len)
             combo_list.remove(largest_combo)
+
+            sum_guy = largest_combo[0]
+            sum_guy_list = []
+            for j in range(len(largest_combo)-1):#need to change this to get keep items on the screen
+                #update the sum
+                sum_guy_list.append(sum_guy)
+                sum_guy = self.add_binary_strings(sum_guy, largest_combo[j+1])
             #make the number of units based on the largest number
-            num_units = len(max(largest_combo, key=len))
+            num_units = len(sum_guy)
 
             combo_text = Text(f"Current Combo: {largest_combo}" , font_size = 24)
             #make the camera fit all of the units
@@ -262,62 +270,73 @@ class AllTogether(MovingCameraScene):
             #write the combo were summing
             combo_text.to_edge(UP)
 
-            self.play(Write(target_text))
-            self.play(Write(combo_text))
+            self.play(Write(combo_text),run_time = 1)
+            self.wait(2)
+            self.play(FadeOut(combo_text, run_time=1))
             #keep track of the numbers that we're adding and have added
-            sum_guy = largest_combo[0]
 
-            summed_up = str(sum_guy)
+            summed_text = Text(f"Sum: {sum_guy}", font_size=20) 
 
-            for j in range(len(largest_combo)-1):
-                
-                center_of_screen = ORIGIN
-                #adding the string the showing what we've added
-                new_part = f" + {largest_combo[j+1]}"
+            center_of_screen = ORIGIN
+            ho = 0
 
-                summed_up = ''.join([summed_up,new_part]) 
-                summed_text = Text(f"Added: {summed_up}", font_size=20).next_to(combo_text,DOWN)  
+            for j in range(len(largest_combo)-1):#need to change this to get keep items on the screen
+
+                ho += 1
+    
                 #make the adders
-                fucker = self.makeAdders(sum_guy,largest_combo[j+1])
+                indicator = 0
+
+                if (j==len(largest_combo)-2):
+                    indicator = 1
+                
+                fucker = self.makeAdders(sum_guy_list[j],largest_combo[j+1],num_units,indicator)
                 adder_units = fucker[0]
                 #update the sum
-                sum_guy = self.add_binary_strings(sum_guy, largest_combo[j+1])
 
-                sum_text = Text(f"Sum = {str(sum_guy)}", font_size = 20).next_to(target_text, UP)
+                sum_text = Text(f"Sum = {str(sum_guy_list[j])}", font_size = 20).next_to(target_text, UP)
                 #putting the centre of the adders in the centre of the screen
                 center_of_adder_units = adder_units.get_center()
                 displacement_vector = center_of_screen - center_of_adder_units
-                adder_units.shift(displacement_vector)
+                adder_units.shift(displacement_vector + ([0,-3.5*j,0]))
 
-                self.play(Create(summed_text))
+                #move the camera down for a bit
+                self.play(self.camera.frame.animate.move_to(adder_units))
+
                 self.play(Create(adder_units, run_time=(num_units)))
-
-                self.wait(2)
-
-                self.play(Write(sum_text), run_time = 2)
     
                 self.wait(2)
+            # end of the combos
+            target_text.move_to(center_of_screen + [0,-4*ho,0])
+            summed_text.next_to(target_text,UP)
+            combo_text.next_to(summed_text,UP)
+            
+            self.play(
+                    Write(combo_text, run_time =1 ),
+                    Write(target_text,run_time = 1),
+                    Write(summed_text,run_time = 1)
+                    )
+            self.wait(1)
 
-                if (sum_guy == binary_target):
-                    #if the sum is correct then make it turn orange and then turn back to normal
-                    true_target = Text(f"Target = {str(binary_target)}", font_size = 20, color = ORANGE).to_edge(DOWN)
-                    true_sum =  Text(f"Sum = {str(sum_guy)}", font_size = 20, color = ORANGE).next_to(true_target, UP)
+            if (sum_guy == binary_target):
+                #if the sum is correct then make it turn orange and then turn back to normal
+                true_target = Text(f"Target = {str(binary_target)}", font_size = 20, color = ORANGE).move_to(center_of_screen + [0,-4*ho,0])
+                true_sum =  Text(f"Sum = Target = {str(sum_guy)}", font_size = 20, color = ORANGE).next_to(true_target, UP)
 
-                    self.play(ReplacementTransform(sum_text,true_sum),
-                              ReplacementTransform(target_text,true_target))
-                    self.wait(1.5)
+                self.play(
+                        ReplacementTransform(summed_text,true_sum, run_time = 1),
+                        ReplacementTransform(target_text,true_target, run_time = 1))
+                    
+                self.wait(2)
 
-                    sum_text = Text(f"Sum = {str(sum_guy)}", font_size = 20).next_to(target_text, UP)
-                    target_text = Text(f"Target = {str(binary_target)}", font_size = 20).to_edge(DOWN)
+                target_text = Text(f"Target = {str(binary_target)}", font_size = 20).move_to(center_of_screen + [0,-4*ho,0])
+                sum_text = Text(f"Sum = {str(sum_guy)}", font_size = 20).next_to(target_text, UP)
 
-                    self.play(
-                        ReplacementTransform(true_sum, sum_text,run_time = 0.5),
-                        ReplacementTransform(true_target, target_text, run_time = 0.5))
-                #fade out the adder, current sum and the numbers we've summed up    
-                to_fade = [adder_units,summed_text,sum_text]
-                vmobjects = [obj for obj in to_fade if isinstance(obj, VMobject)]
-                self.play(FadeOut(VGroup(*vmobjects), run_time=1))
-            # fade out everything at thend
+                self.play(
+                    ReplacementTransform(true_sum, sum_text,run_time = 1.5),
+                    ReplacementTransform(true_target, target_text, run_time = 1))
+            self.wait(2)
+            #get rid of all the shit
             vmobjects = [obj for obj in self.mobjects if isinstance(obj, VMobject)]
             self.play(FadeOut(VGroup(*vmobjects), run_time=2)) 
             
@@ -362,19 +381,19 @@ class AllTogether(MovingCameraScene):
             i += 1
 
         return big_list
-    def makeAdders(self, bit1,bit2):
+    def makeAdders(self, bit1,bit2,n,ron):
 
         result = []
 
-        max_len = max(len(bit1), len(bit2))
+        max_len = n
         bit1 = [0] * (max_len - len(bit1)) + [int(digit) for digit in bit1]
         bit2 = [0] * (max_len - len(bit2)) + [int(digit) for digit in bit2]
 
         carry = 0
         input_list = []
 
-        for i in range(max_len - 1, -1, -1):
-            for_adder = (bit1[i], bit2[i], carry,i)
+        for i in range(n - 1, -1, -1):
+            for_adder = (bit1[i], bit2[i], carry,i,ron)
             sum_bits = bit1[i] + bit2[i] + carry
             result.insert(0, sum_bits % 2)  
             # insert the least significant bit to the front
@@ -393,9 +412,9 @@ class AllTogether(MovingCameraScene):
 
 
 class AdderUnit(VGroup):
-    def __init__(self, A, B, C_in,position, **kwargs):
+    def __init__(self, A, B, C_in,position,sandwich, **kwargs):
         super().__init__(**kwargs)
-        self.createUnit(A, B, C_in,position)
+        self.createUnit(A, B, C_in,position,sandwich)
     def construct(self):
         # create an instance of AdderUnit
         AdderUnit.width = self[0][0].get_width()
@@ -412,12 +431,13 @@ class AdderUnit(VGroup):
 
         self.wait(1)
 
-    def createUnit(self,A,B,C_in,position):
+    def createUnit(self,A,B,C_in,position,sandwich):
+        print(sandwich)
         #doing the binary calculations
         total = A + B + C_in
         S = total % 2
         C_out = total // 2
-        
+
         #creating all of the objects
         box = VGroup(Square(side_length=1, color = BLUE),Text("Full\nAdder", font_size = 20).move_to(Square())).shift(2*RIGHT)
         input_A = Text(f"{A}", font_size = 24).next_to(box,UP * 3)
@@ -427,6 +447,7 @@ class AdderUnit(VGroup):
         A_dot = Dot(color=WHITE,radius = 0.03).move_to(input_A.get_bottom()+ [0,-0.1,0])
         B_dot = Dot(color=WHITE,radius = 0.03).move_to(input_B.get_bottom()+ [0,-0.1,0])
         S_dot = Dot(color=WHITE,radius = 0.03).move_to(sum.get_top()+ [0,0.1,0])
+
 
         #make it blue if the input is 1, signifying water present
         if (S == 1):
@@ -483,4 +504,14 @@ class AdderUnit(VGroup):
                 c = Text(f"{C_out}", font_size = 18).next_to(box,LEFT).shift(UP * .2)
 
                 self.add(box,A_dot,B_dot,S_dot, input_A, input_B, sum, c, line_A, line_B, line_sum, line_carry)
-
+        
+        if sandwich == 0:
+            if (S==1):
+                S_outdot = Dot(color=BLUE_C,radius = 0.04).move_to(sum.get_bottom()+ [0,-0.1,0])
+                S_outdot1 = Dot(color=BLUE_C,radius = 0.04).move_to(sum.get_bottom()+ [0,-0.9,0])
+                sum_outline = Line(sum.get_bottom() + [0,-0.1,0], sum.get_bottom() + [0,-0.9,0], color = BLUE_C, stroke_width = 3)
+            else:
+                S_outdot = Dot(color=WHITE,radius = 0.03).move_to(sum.get_bottom()+ [0,-0.1,0])
+                S_outdot1 = Dot(color=WHITE,radius = 0.03).move_to(sum.get_bottom()+ [0,-0.9,0])
+                sum_outline = Line(sum.get_bottom() + [0,-0.1,0], sum.get_bottom() + [0,-0.9,0], color = WHITE, stroke_width = 1)
+            self.add(S_outdot,S_outdot1,sum_outline)
