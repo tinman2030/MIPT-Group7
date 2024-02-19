@@ -28,8 +28,10 @@ The AllTogether class is meant to do all of the computations for adding the sums
 
 - ~~Make a plot of the algorithm running time to show the exponential nature of it. Plot running time vs. size of set~~
 
-- make a plot showing the number of adders/gates needed to compute n-sized set
+- ~~make a plot showing the number of adders/gates needed to compute n-sized set~~
 
 - recruit someone with fluid dynamics experience to make the analysis and explanation of the greedy siphon
+
+- make the video have a white background
 
 - finish the presentation, practice presentation. WIN

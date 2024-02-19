@@ -1,5 +1,6 @@
 from manim import *
 
+
 class HalfAdder(Scene):
     def construct(self):
         Title = Text("Half Adder", font_size = 36).shift(3*UP + .2 * RIGHT)
