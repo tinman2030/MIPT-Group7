@@ -19,9 +19,17 @@ The AllTogether class is meant to do all of the computations for adding the sums
 - ~~Make the numbers that we've already sequentially adder turn red or something ~~
 - ~~Make the lines arrows in adder_anim.py, what if someone from Tunisia finds this?~~
 
-- Make is so that you don't clear it the next time and the output from one addition becomes the input to the next one, while all of the additions stay on the screen
-    i.e make the output of one addition flow into the input of the new sequence of adders
+- ~~Make is so that you don't clear it the next time and the output from one addition becomes the input to the next one, while all of the additions stay on the screen~~
+   ~~i.e make the output of one addition flow into the input of the new sequence of adders~~
 
-- make it run multiple at a time?
+- make it run multiple at a time? RUN ALL AT THE SAME TIME
 
 - Do the running time analysis, including explaing the logic behind sequentially adding the numbers
+
+- ~~Make a plot of the algorithm running time to show the exponential nature of it. Plot running time vs. size of set~~
+
+- make a plot showing the number of adders/gates needed to compute n-sized set
+
+- recruit someone with fluid dynamics experience to make the analysis and explanation of the greedy siphon
+
+- finish the presentation, practice presentation. WIN

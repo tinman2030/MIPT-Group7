@@ -2,7 +2,7 @@ from manim import *
 from itertools import combinations
 
 class AllTogether(MovingCameraScene):
-    def construct(self,original_list = [31,36,24,24,3],target = 67):
+    def construct(self,original_list = [31,36,34,24,13],target = 67):
 
         Title = Text("Half Adder", font_size = 36).shift(3*UP + .2 * RIGHT)
         # make the inputs
@@ -298,7 +298,8 @@ class AllTogether(MovingCameraScene):
                 #putting the centre of the adders in the centre of the screen
                 center_of_adder_units = adder_units.get_center()
                 displacement_vector = center_of_screen - center_of_adder_units
-
+                
+                #the centre of the camera changes since the size of the adders changes so have to account for that
                 if j == len(largest_combo)-2:
                     y = ((j-1) * 4) + 3.5
                     adder_units.shift(displacement_vector + ([0,-y,0]))

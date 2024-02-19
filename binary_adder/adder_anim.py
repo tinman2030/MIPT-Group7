@@ -1,5 +1,4 @@
 from manim import *
-import os
 
 class HalfAdder(Scene):
     def construct(self):

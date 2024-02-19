@@ -2,7 +2,7 @@ from manim import *
 from itertools import combinations
 
 class AllTogether(MovingCameraScene):
-    def construct(self,original_list = [31,36,21,43],target = 67):
+    def construct(self,original_list = [31,36,34,24,13],target = 67):
 
         Title = Text("Half Adder", font_size = 36).shift(3*UP + .2 * RIGHT)
         # make the inputs
@@ -298,7 +298,15 @@ class AllTogether(MovingCameraScene):
                 #putting the centre of the adders in the centre of the screen
                 center_of_adder_units = adder_units.get_center()
                 displacement_vector = center_of_screen - center_of_adder_units
-                adder_units.shift(displacement_vector + ([0,-3.5*j,0]))
+                
+                #the centre of the camera changes since the size of the adders changes so have to account for that
+                if j == len(largest_combo)-2:
+                    y = ((j-1) * 4) + 3.5
+                    adder_units.shift(displacement_vector + ([0,-y,0]))
+
+                else:
+                    adder_units.shift(displacement_vector + ([0,-4*j,0]))
+
 
                 #move the camera down for a bit
                 self.play(self.camera.frame.animate.move_to(adder_units))
@@ -476,8 +484,8 @@ class AdderUnit(VGroup):
             if(position == 0):
                  #if it is the last one
                 c = Text(f"{C_out}", font_size = 18).next_to(sum, LEFT * 3.6)
-                line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-0.5, -0.1, 0], color=BLUE_C, stroke_width=3)
-                line_carry2 = Line(box.get_left() + [-0.5, -0.1, 0], c.get_top() + [0,0.1,0], color = BLUE_C, stroke_width = 3)
+                line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-0.495, -0.1, 0], color=BLUE_C, stroke_width=3)
+                line_carry2 = Line(box.get_left() + [-0.495, -0.1, 0], c.get_top() + [0,0.1,0], color = BLUE_C, stroke_width = 3)
 
                 C_dot = Dot(color=BLUE_C,radius = 0.04).move_to(c.get_top() + [0,0.1,0])
             
@@ -492,8 +500,8 @@ class AdderUnit(VGroup):
             if(position == 0):
                  #if it is the last one
                 c = Text(f"{C_out}", font_size = 18).next_to(sum, LEFT * 3.6)
-                line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-0.486, -0.1, 0], color=WHITE, stroke_width=1)
-                line_carry2 = Line(box.get_left() + [-0.486, -0.1, 0], c.get_top() + [0,0.1,0], color = WHITE, stroke_width = 1)
+                line_carry = Line(box.get_left() + [0, -0.1, 0], box.get_left() + [-0.495, -0.1, 0], color=WHITE, stroke_width=1)
+                line_carry2 = Line(box.get_left() + [-0.495, -0.1, 0], c.get_top() + [0,0.1,0], color = WHITE, stroke_width = 1)
 
                 C_dot = Dot(color=WHITE,radius = 0.03).move_to(c.get_top() + [0,0.1,0])
             

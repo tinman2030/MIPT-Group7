@@ -73,7 +73,12 @@ def make_sublists(list,n):
     big_list.append(list[i*n:])
 
     return big_list
-
+def get_sums(combos, target):
+    good_list= []
+    for combo in combos:
+        if sum(combo) == target:
+            good_list.append(combo)
+        
 
 def main():
     user_input = input("Enter a list of numbers separated by spaces: ")
@@ -86,8 +91,6 @@ def main():
         print("Invalid input. Please enter numbers separated by spaces.")
     #making the combos
     combinations = make_combos(numbers)
-    
-    print(make_sublists(combinations,8))
 
     
 if __name__ == "__main__":
