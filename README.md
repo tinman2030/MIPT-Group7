@@ -24,7 +24,7 @@ The AllTogether class is meant to do all of the computations for adding the sums
 
 - make it run multiple at a time? RUN ALL AT THE SAME TIME
 
-- Do the running time analysis, including explaing the logic behind sequentially adding the numbers
+- ~~Do the running time analysis, including explaing the logic behind sequentially adding the numbers~~
 
 - ~~Make a plot of the algorithm running time to show the exponential nature of it. Plot running time vs. size of set~~
 
@@ -32,6 +32,6 @@ The AllTogether class is meant to do all of the computations for adding the sums
 
 - recruit someone with fluid dynamics experience to make the analysis and explanation of the greedy siphon
 
-- make the video have a white background
+- ~~make the video have a white background~~
 
 - finish the presentation, practice presentation. WIN

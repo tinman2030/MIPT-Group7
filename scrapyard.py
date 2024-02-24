@@ -2,7 +2,7 @@ from manim import *
 from itertools import combinations
 
 class AllTogether(MovingCameraScene):
-    def construct(self,original_list = [31,36,34,24,9],target = 67):
+    def construct(self,original_list = [31,36,34,33],target = 67):
 
         Title = Text("Half Adder", font_size = 36).shift(3*UP + .2 * RIGHT)
         # make the inputs
