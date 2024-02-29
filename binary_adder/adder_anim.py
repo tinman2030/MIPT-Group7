@@ -184,4 +184,4 @@ class HalfAdder(Scene):
 
             GrowFromPoint(Line(title.get_left() + [-0.5,-0.3,0], title.get_right() + [0.5,-0.3,0], stroke_width = 3,color = ORANGE),title.get_left() + [-0.5,-0.3,0],run_time = 8),
         )
-        self.wait(3)
+        self.wait(10)
