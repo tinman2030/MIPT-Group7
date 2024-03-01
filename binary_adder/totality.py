@@ -2,7 +2,7 @@ from manim import *
 from itertools import combinations
 
 class AllTogether(MovingCameraScene):
-    def construct(self,original_list = [31,36,34,24,9],target = 67):
+    def construct(self,original_list = [30,31,36,13,24],target = 67):
 
         #display the original list
         binary_target = bin(target)[2:]
@@ -41,6 +41,7 @@ class AllTogether(MovingCameraScene):
         target_text = Text(f"Target = {str(binary_target)}", font_size = 20)
 
         for i in range((original_length)):
+            print(i)
             #finding the largest combination and add from largest to smallest
             largest_combo = max(combo_list, key=len)
             combo_list.remove(largest_combo)
